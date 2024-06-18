@@ -7,8 +7,12 @@ on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ main ]
+    paths:
+      - ansible/**
   pull_request:
     branches: [ main ]
+    paths:
+      - ansible/**
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -41,4 +45,3 @@ jobs:
         run: test -f "ansible/playbook_repo.yml" || exit 0 && ansible-playbook ansible/playbook_repo.yml --syntax-check
         env:
            ANSIBLE_ACTION_WARNINGS: False
-
