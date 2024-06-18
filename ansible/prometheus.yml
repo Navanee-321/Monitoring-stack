@@ -5,6 +5,6 @@
   vars_files:
     - ../variables/ansible/env/common.yml
   roles:
-    - promethues
+    - prometheus
   tags:
     - monitoring-stack

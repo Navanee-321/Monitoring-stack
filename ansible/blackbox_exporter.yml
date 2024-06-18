@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  vars_files:
+    - ../variables/ansible/env/common.yml
+  roles:
+    - blackbox_exporter
+  tags:
+    - monitoring-stack
+    - metrics-exporter
