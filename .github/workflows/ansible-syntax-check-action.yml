@@ -1,0 +1,44 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Ansible Syntax Check
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  ansible_syntax_check:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Install python3 pip and ansible latest
+      - name: Install python and ansible
+        run: sudo apt update && sudo apt install -y python3-pip && sudo pip3 install ansible
+        
+      # If `roles` folder exists, create a playbook_repo.yml playbook to perform the syntax check
+      - name: Creating playbook_repo.yml from roles folder (if exists)
+        run: test -d "ansible/roles" || exit 0 && echo $LINE1 > ansible/playbook_repo.yml && echo $LINE2 >> ansible/playbook_repo.yml && printf "  roles:\n" >> ansible/playbook_repo.yml &&  for i in `ls ansible/roles`; do echo "  - $i" >> ansible/playbook_repo.yml; done
+        env: 
+          LINE1: "---"
+          LINE2: "- hosts: localhost"
+          
+      # Check ansible syntax if roles folder exists (repo with playbooks and roles)
+      - name: Ansible Syntax Check of all roles of the playbook
+        run: test -f "ansible/playbook_repo.yml" || exit 0 && ansible-playbook ansible/playbook_repo.yml --syntax-check
+        env:
+           ANSIBLE_ACTION_WARNINGS: False
+
