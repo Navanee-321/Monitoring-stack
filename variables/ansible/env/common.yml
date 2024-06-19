@@ -11,6 +11,9 @@ grafana_dashboards:
  - dashboard_id: '11074'
    revision_id: '9'
    datasource: 'Prometheus'
+ - dashboard_id: '1860'
+   revision_id: '37'
+   datasource: 'Prometheus'
 
 prometheus_targets:
   node:
