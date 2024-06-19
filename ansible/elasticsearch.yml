@@ -5,6 +5,7 @@
   vars_files:
     - ../variables/ansible/env/common.yml
   roles:
+    - java
     - elasticsearch
   tags:
     - logging-stack
