@@ -7,6 +7,11 @@ grafana_datasources:
    type: "prometheus"
    url: "http://{{ groups['monitoring-stack'][0] }}:9090"
 
+grafana_dashboards:
+ - dashboard_id: '11074'
+   revision_id: '9'
+   datasource: 'Prometheus'
+
 prometheus_targets:
   node:
     - targets:
