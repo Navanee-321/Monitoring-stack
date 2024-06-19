@@ -7,5 +7,6 @@
   roles:
     - java
     - elasticsearch
+    - elasticsearch-curator
   tags:
     - logging-stack
