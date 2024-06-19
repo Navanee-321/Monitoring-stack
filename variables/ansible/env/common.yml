@@ -6,3 +6,8 @@ grafana_datasources:
  - name: "Prometheus"
    type: "prometheus"
    url: "http://{{ groups['monitoring-stack'][0] }}:9090"
+
+prometheus_targets:
+  node:
+    - targets:
+        - localhost:9100
