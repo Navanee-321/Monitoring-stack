@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: true
+  gather_facts: true
+  ignore_unreachable: true
+  vars_files:
+    - ../variables/ansible/env/common.yml
+  roles:
+    - filebeat
+  tags:
+    - logging-stack
