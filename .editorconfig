@@ -1,0 +1,23 @@
+# EditorConfig: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = false
+insert_final_newline = true
+
+# 2 space indentation for YAML
+[{*.yml,*.yaml}]
+indent_style = space
+indent_size = 2
+
+
+# Jinja2 template files
+[*.j2]
+end_of_line = lf
