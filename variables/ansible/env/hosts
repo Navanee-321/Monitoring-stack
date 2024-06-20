@@ -6,3 +6,6 @@ localhost
 
 [logging-stack]
 localhost
+
+[nginx]
+localhost
