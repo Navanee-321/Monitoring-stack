@@ -24,6 +24,7 @@ prometheus_alertmanager_config:
   - static_configs:
       - targets: ["{{ groups['monitoring-stack'][0] }}:9093"]
 
+alertmanager_slack_api_url: 'https://hooks.slack.com/services/xxx/xxx/xxx'
 alertmanager_receivers:
   - name: slack
     slack_configs:
