@@ -71,3 +71,10 @@ alertmanager_route:
     - match:
         severity: critical
       receiver: 'email'
+
+filebeat_inputs:
+  - type: filestream
+    id: 'nginx'
+    paths:
+      - /var/log/nginx/error.log
+      - /var/log/nginx/access.log
