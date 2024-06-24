@@ -7,13 +7,13 @@
     state: present
 
 - name: Add Elasticsearch apt key.
-  apt_key:
-    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    state: present
+  get_url:
+    url: 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+    dest: '/etc/apt/trusted.gpg.d/elasticsearch.gpg'
 
 - name: Add Logstash repository.
   apt_repository:
-    repo: 'deb https://artifacts.elastic.co/packages/{{ logstash_version }}/apt stable main'
+    repo: 'deb [signed-by=/etc/apt/trusted.gpg.d/elasticsearch.gpg] https://artifacts.elastic.co/packages/{{ logstash_version }}/apt stable main'
     state: present
     update_cache: true
 

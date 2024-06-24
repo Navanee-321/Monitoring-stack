@@ -7,13 +7,12 @@
     state: present
 
 - name: Add Elasticsearch apt key.
-  apt_key:
-    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
-    state: present
+  get_url:
+    url: 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+    dest: '/etc/apt/trusted.gpg.d/elasticsearch.gpg'
 
 - name: Add Filebeat repository.
   apt_repository:
-    repo: 'deb https://artifacts.elastic.co/packages/{{ filebeat_version }}/apt stable main'
+    repo: 'deb [signed-by=/etc/apt/trusted.gpg.d/elasticsearch.gpg] https://artifacts.elastic.co/packages/{{ filebeat_version }}/apt stable main'
     state: present
     update_cache: true
