@@ -22,71 +22,69 @@ This repository is organized to deploy a complete monitoring and logging solutio
 ## Folder Structure
 
 ```sh
-.
+
 ├── ansible
-│   └── roles
-│   │   ├── elasticsearch
-│   │   ├── grafana
-│   │   ├── kibana
-│   │   ├── logstash
-│   │   ├── node_exporter
-│   │   └── promethues
-│   ├── ansible.cfg
-│   ├── elasticsearch.yml
-│   ├── grafana.yml
-│   ├── kibana.yml
-│   ├── logstash.yml
-│   ├── node_exporter.yml
-│   ├── promethues.yml
-│
+│   ├── install_stack.yml
+│   └── roles
+│       ├── alertmanager
+│       ├── blackbox_exporter
+│       ├── elasticsearch
+│       ├── elasticsearch-curator
+│       ├── filebeat
+│       ├── grafana
+│       ├── java
+│       ├── kibana
+│       ├── logstash
+│       ├── nginx
+│       ├── node_exporter
+│       ├── process_exporter
+│       └── prometheus
 ├── kubernetes
-│   └── helm_charts
-│       ├── common_charts
-│       ├── logging
-│       │   ├── elasticsearch
-│       │   ├── kibana
-│       │   └── logstash
-│       └── monitoring
-│           ├── alertmanager
-│           ├── grafana
-│           ├── node_exporter
-│           └── prometheus
-│
+│   └── helm_charts
+│       ├── common_charts
+│       │   ├── nginx
+│       │   └── oauth2-proxy
+│       ├── logging
+│       │   ├── elasticsearch
+│       │   ├── kibana
+│       │   └── logstash
+│       └── monitoring
+│           ├── alertmanager
+│           ├── grafana
+│           ├── node_exporter
+│           └── prometheus
 ├── pipelines
-│   └── deploy
-│       ├── logging
-│       │   └── Jenkinsfile
-│       └── monitoring
-│           └── Jenkinsfile
-│
+│   └── deploy
+│       ├── logging
+│       └── monitoring
 ├── scripts
-│   └── tasks
-│       ├── check_issue.py
-│       └── resolve_issue.py
-│
+│   └── tasks
+│       ├── check_issue.py
+│       └── resolve_issue.py
 └── variables
     ├── ansible
-    │   └── env
-    │       ├── common.yml
-    │       ├── hosts
+    │   └── env
+    │       ├── common.yml
+    │       ├── hosts
+    │       └── nginx.yml
     └── kubernetes
         └── env
-            ├── common.yml
-            └── nginx.yml
+            └── common.yml
+
 ```
 ## Ansible Setup
 
 The `ansible` directory contains playbooks and roles for deploying the monitoring and logging stack using Ansible.
 
 -   `ansible.cfg`: Configuration file for Ansible.
--   `elasticsearch.yml`, `grafana.yml`, `kibana.yml`, `logstash.yml`, `node_exporter.yml`, `promethues.yml`: Playbooks for deploying each component.
+-   `ansible-playbook -i variables/ansible/env/hosts ansible/install_stack.yml --tags monitoring-stack,logging-stack`: use tags for deploying each component.
 -   `roles/`: Directory containing Ansible roles for each component.
 
 ### Running Ansible Playbooks
 
 1.  Ensure you have Ansible installed.
 2.  Update the inventory file and variables as needed.
-3.  Run the desired playbook using the jenkins pipeline
+3.  Run the desired playbook using the pipeline
 
 
 ## Kubernetes Setup
@@ -99,7 +97,7 @@ The `kubernetes` directory contains Helm charts for deploying the stack on Kuber
 
 1.  Ensure you have Helm and kubectl installed.
 2.  Update the values in the Helm charts as necessary.
-3.  Deploy the Helm charts using the jenkins pipeline
+3.  Deploy the Helm charts using the pipeline
 
 
 ## CI/CD Pipelines
@@ -124,7 +122,7 @@ The `scripts` directory contains utility scripts for various tasks.
 
 ### Running Scripts
 
-Create and run the scripts using jenkins pipeline
+Create and run the scripts using pipeline
 
 ## Variables
 
