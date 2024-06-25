@@ -5,6 +5,11 @@ name: Deploy
 on:
   workflow_dispatch:
     inputs:
+      repo:
+        description: 'Repo to deploy from'
+        required: true
+        default: 'optimize-it/Observability'
+        type: string
       branch:
         description: 'Branch to deploy from'
         required: true
@@ -29,7 +34,7 @@ jobs:
       - name: Checkout Public Repo
         uses: actions/checkout@v3
         with:
-          repository: srajasimman/monitoring-logging-stack
+          repository: ${{ github.event.inputs.repo }}
           ref: ${{ github.event.inputs.branch }}
           path: ${{ github.workspace }}/monitoring-logging-stack
 
