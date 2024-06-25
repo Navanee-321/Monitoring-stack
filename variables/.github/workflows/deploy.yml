@@ -37,6 +37,7 @@ jobs:
           repository: ${{ github.event.inputs.repo }}
           ref: ${{ github.event.inputs.branch }}
           path: ${{ github.workspace }}/monitoring-logging-stack
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Checkout Private Repo
         uses: actions/checkout@v3
