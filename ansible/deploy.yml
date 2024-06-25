@@ -51,7 +51,7 @@
     - ../variables/ansible/env/common.yml
   roles:
     - role: filebeat
-      tags: logging-stack, log-collection
+      tags: logging-stack, log-collection, filebeat
 
 - name: Deploy Web Server
   hosts: nginx
