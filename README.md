@@ -24,7 +24,7 @@ This repository is organized to deploy a complete monitoring and logging solutio
 ```sh
 
 ├── ansible
-│   ├── deploy.yml
+│   ├── deploy-stack-vm.yml
 │   └── roles
 │       ├── alertmanager
 │       ├── blackbox_exporter
@@ -77,7 +77,7 @@ This repository is organized to deploy a complete monitoring and logging solutio
 The `ansible` directory contains playbooks and roles for deploying the monitoring and logging stack using Ansible.
 
 -   `ansible.cfg`: Configuration file for Ansible.
--   `ansible-playbook -i variables/ansible/env/hosts ansible/deploy.yml --tags monitoring-stack,logging-stack`: use tags for deploying each component.
+-   `ansible-playbook -i variables/ansible/env/hosts ansible/deploy-stack-vm.yml --tags monitoring-stack,logging-stack`: use tags for deploying each component.
 -   `roles/`: Directory containing Ansible roles for each component.
 
 ### Running Ansible Playbooks

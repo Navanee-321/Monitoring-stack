@@ -1,0 +1,59 @@
+# github workflow to deploy the stack
+
+name: Deploy Stack - Virtual Machine
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: 'Repo to deploy from'
+        required: true
+        default: 'optimize-it/Observability'
+        type: string
+      branch:
+        description: 'Branch to deploy from'
+        required: true
+        default: 'main'
+        type: string
+      stack:
+        description: 'Stack to deploy'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - monitoring-stack
+          - logging-stack
+          - reverse-proxy
+
+jobs:
+  deploy:
+    name: Deploy ${{ github.event.inputs.stack }}
+    runs-on: self-hosted
+    steps:
+      - name: Checkout Public Repo
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.event.inputs.repo }}
+          ref: ${{ github.event.inputs.branch }}
+          path: ${{ github.workspace }}/monitoring-logging-stack
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+      - name: Checkout Private Repo
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: ${{ github.workspace }}/variables
+
+      - name: Copy Ansible variables
+        run: |
+          cp -r ${{ github.workspace }}/variables/* ${{ github.workspace }}/monitoring-logging-stack/variables/
+
+      - name: Run Ansible playbook to deploy ${{ github.event.inputs.stack }}
+        uses: dawidd6/action-ansible-playbook@v2.8.0
+        with:
+          playbook: deploy-stack-vm.yml
+          directory: ${{ github.workspace }}/monitoring-logging-stack/ansible
+          options: |
+            --inventory ${{ github.workspace }}/monitoring-logging-stack/variables/ansible/env/hosts
+            --tags ${{ github.event.inputs.stack }}

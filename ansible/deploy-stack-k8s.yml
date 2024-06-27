@@ -1,0 +1,24 @@
+---
+- name: Deploy Monitoring Stack on Kubernetes
+  hosts: localhost
+  become: true
+  vars_files:
+    - ../variables/kubernetes/env/common.yml
+  roles:
+    - role: kube-prometheus-stack
+      tags: kube-monitoring-stack, kube-prometheus-stack
+
+- name: Deploy Logging Stack on Kubernetes
+  hosts: localhost
+  become: true
+  vars_files:
+    - ../variables/kubernetes/env/common.yml
+  roles:
+    - role: kube-elasticsearch
+      tags: kube-logging-stack, kube-elasticsearch
+    - role: kube-kibana
+      tags: kube-logging-stack, kube-kibana
+    - role: kube-logstash
+      tags: kube-logging-stack, kube-logstash
+    - role: kube-filebeat
+      tags: kube-logging-stack, kube-filebeat
