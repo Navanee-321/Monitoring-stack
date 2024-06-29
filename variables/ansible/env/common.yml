@@ -3,9 +3,9 @@ grafana_security:
   admin_password: password
 
 grafana_datasources:
- - name: "Prometheus"
-   type: "prometheus"
-   url: "http://{{ groups['monitoring-stack'][0] }}:9090"
+  - name: "Prometheus"
+    type: "prometheus"
+    url: "http://{{ groups['monitoring-stack'][0] }}:9090"
 
 grafana_dashboards:
   - dashboard_id: '11074'
