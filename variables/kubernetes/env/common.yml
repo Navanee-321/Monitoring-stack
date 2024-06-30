@@ -1,0 +1,23 @@
+# variables for kube-prometheus-stack
+kube_prometheus_stack_release_name: monitoring
+kube_prometheus_stack_namespace: monitoring
+kube_prometheus_stack_chart_ref: ../kubernetes/helm_charts/monitoring/kube-prometheus-stack
+kube_prometheus_stack_values: {}
+
+# variables for kube-logging-stack elasticsearch
+kube_logging_stack_elasticsearch_release_name: logging
+kube_logging_stack_elasticsearch_namespace: logging
+kube_logging_stack_elasticsearch_chart_ref: ../kubernetes/helm_charts/logging/elasticsearch
+kube_logging_stack_elasticsearch_values: {}
+
+# variables for kube-logging-stack kibana
+kube_logging_stack_kibana_release_name: logging
+kube_logging_stack_kibana_namespace: logging
+kube_logging_stack_kibana_chart_ref: ../kubernetes/helm_charts/logging/kibana
+kube_logging_stack_kibana_values: {}
+
+# variables for kube-logging-stack fluent-bit
+kube_logging_stack_fluent_bit_release_name: logging
+kube_logging_stack_fluent_bit_namespace: logging
+kube_logging_stack_fluent_bit_chart_ref: ../kubernetes/helm_charts/logging/fluent-bit
+kube_logging_stack_fluent_bit_values: {}

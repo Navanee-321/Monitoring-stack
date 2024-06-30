@@ -1,2 +1,21 @@
 ---
-# tasks file for kube-kibana
+- name: Install or Upgrade kube-logging-stack kibana
+  kubernetes.core.helm:
+    name: "{{ kube_logging_stack_kibana_release_name }}"
+    namespace: "{{ kube_logging_stack_kibana_namespace }}"
+    chart_ref: "{{ kube_logging_stack_kibana_chart_ref }}"
+    create_namespace: true
+    wait: true
+    timeout: 600s
+    values: "{{ kube_logging_stack_kibana_values }}"
+
+- name: Gather information about kube-logging-stack kibana
+  kubernetes.core.helm_info:
+    name: "{{ kube_logging_stack_kibana_release_name }}"
+    namespace: "{{ kube_logging_stack_kibana_namespace }}"
+  register: _kube_logging_stack_kibana_info
+  no_log: true
+
+- name: Gather information about kube-logging-stack kibana
+  debug:
+    msg: "{{ _kube_logging_stack_kibana_info.status.status }}"

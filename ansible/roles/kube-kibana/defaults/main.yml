@@ -1,2 +1,6 @@
 ---
-# defaults file for kube-kibana
+# defaults file for kube-logging-stack
+kube_logging_stack_kibana_release_name: logging
+kube_logging_stack_kibana_namespace: logging
+kube_logging_stack_kibana_chart_ref: ../kubernetes/helm_charts/logging/kibana
+kube_logging_stack_kibana_values: {}

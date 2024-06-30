@@ -1,2 +1,6 @@
 ---
 # defaults file for kube-prometheus-stack
+kube_prometheus_stack_release_name: monitoring
+kube_prometheus_stack_namespace: monitoring
+kube_prometheus_stack_chart_ref: ../kubernetes/helm_charts/monitoring/kube-prometheus-stack
+kube_prometheus_stack_values: {}

@@ -1,2 +1,6 @@
 ---
-# defaults file for kube-elasticsearch
+# defaults file for kube-logging-stack elasticsearch
+kube_logging_stack_elasticsearch_release_name: logging
+kube_logging_stack_elasticsearch_namespace: logging
+kube_logging_stack_elasticsearch_chart_ref: ../kubernetes/helm_charts/logging/elasticsearch
+kube_logging_stack_elasticsearch_values: {}
