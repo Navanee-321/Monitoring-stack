@@ -31,6 +31,11 @@ jobs:
     name: Deploy ${{ github.event.inputs.stack }}
     runs-on: self-hosted
     steps:
+      - name: Install Python and Ansible
+        run: sudo apt update && sudo apt install -y python3-pip && sudo pip3 install ansible ruamel.yaml
+        env:
+          DEBIAN_FRONTEND: noninteractive
+
       - name: Checkout Public Repo
         uses: actions/checkout@v3
         with:
@@ -54,6 +59,7 @@ jobs:
         with:
           playbook: deploy-stack-vm.yml
           directory: ${{ github.workspace }}/monitoring-logging-stack/ansible
+          requirements: ${{ github.workspace }}/monitoring-logging-stack/ansible/requirements.yml
           options: |
             --inventory ${{ github.workspace }}/monitoring-logging-stack/variables/ansible/env/hosts
             --tags ${{ github.event.inputs.stack }}

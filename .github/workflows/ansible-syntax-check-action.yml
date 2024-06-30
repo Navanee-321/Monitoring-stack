@@ -29,9 +29,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Install python3 pip and ansible latest
-      - name: Install python and ansible
-        run: sudo apt update && sudo apt install -y python3-pip && sudo pip3 install ansible
+      - name: Install Python and Ansible
+        run: sudo apt update && sudo apt install -y python3-pip && sudo pip3 install ansible ruamel.yaml
+        env:
+          DEBIAN_FRONTEND: noninteractive
         
       # If `roles` folder exists, create a playbook_repo.yml playbook to perform the syntax check
       - name: Creating playbook_repo.yml from roles folder (if exists)
@@ -39,9 +40,13 @@ jobs:
         env: 
           LINE1: "---"
           LINE2: "- hosts: localhost"
-          
-      # Check ansible syntax if roles folder exists (repo with playbooks and roles)
+
       - name: Ansible Syntax Check of all roles of the playbook
-        run: test -f "ansible/playbook_repo.yml" || exit 0 && ansible-playbook ansible/playbook_repo.yml --syntax-check
+        uses: dawidd6/action-ansible-playbook@v2.8.0
+        with:
+          playbook: playbook_repo.yml
+          directory: ${{ github.workspace }}/ansible
+          options: |
+            --syntax-check
         env:
            ANSIBLE_ACTION_WARNINGS: False
