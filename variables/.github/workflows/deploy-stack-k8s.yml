@@ -53,6 +53,7 @@ jobs:
         with:
           playbook: deploy-stack-k8s.yml
           directory: ${{ github.workspace }}/monitoring-logging-stack/ansible
+          requirements: ${{ github.workspace }}/monitoring-logging-stack/ansible/requirements.yml
           options: |
             --inventory ${{ github.workspace }}/monitoring-logging-stack/variables/ansible/env/hosts
             --tags ${{ github.event.inputs.stack }}
