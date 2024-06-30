@@ -1,6 +1,6 @@
-# github workflow to deploy the stack on virtual machine environment
+# github workflow to deploy the stack on kubernetes environment
 
-name: Deploy Stack - Virtual Machine
+name: Deploy Stack - Kubernetes
 
 on:
   workflow_dispatch:
@@ -22,9 +22,8 @@ on:
         type: choice
         options:
           - all
-          - monitoring-stack
-          - logging-stack
-          - reverse-proxy
+          - kube-monitoring-stack
+          - kube-logging-stack
 
 jobs:
   deploy:
@@ -52,7 +51,7 @@ jobs:
       - name: Run Ansible playbook to deploy ${{ github.event.inputs.stack }}
         uses: dawidd6/action-ansible-playbook@v2.8.0
         with:
-          playbook: deploy-stack-vm.yml
+          playbook: deploy-stack-k8s.yml
           directory: ${{ github.workspace }}/monitoring-logging-stack/ansible
           options: |
             --inventory ${{ github.workspace }}/monitoring-logging-stack/variables/ansible/env/hosts
