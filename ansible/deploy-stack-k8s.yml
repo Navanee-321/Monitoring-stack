@@ -5,6 +5,7 @@
   vars_files:
     - ../variables/kubernetes/env/common.yml
   roles:
+    - role: helm
     - role: kube-prometheus-stack
       tags: kube-prometheus-stack
   tags: kube-monitoring-stack
@@ -15,6 +16,7 @@
   vars_files:
     - ../variables/kubernetes/env/common.yml
   roles:
+    - role: helm
     - role: kube-elasticsearch
       tags: kube-elasticsearch
     - role: kube-kibana
