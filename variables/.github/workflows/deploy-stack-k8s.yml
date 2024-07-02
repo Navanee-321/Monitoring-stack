@@ -60,6 +60,5 @@ jobs:
           directory: ${{ github.workspace }}/monitoring-logging-stack/ansible
           requirements: ${{ github.workspace }}/monitoring-logging-stack/ansible/requirements.yml
           inventory: localhost
-          configuration: ${{ github.workspace }}/ansible/ansible.cfg
           options: |
             --tags ${{ github.event.inputs.stack }}
