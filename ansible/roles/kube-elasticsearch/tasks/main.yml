@@ -8,14 +8,8 @@
     wait: true
     timeout: 600s
     values: "{{ kube_logging_stack_elasticsearch_values }}"
-
-- name: Gather information about kube-logging-stack elasticsearch
-  kubernetes.core.helm_info:
-    name: "{{ kube_logging_stack_elasticsearch_release_name }}"
-    namespace: "{{ kube_logging_stack_elasticsearch_namespace }}"
   register: _kube_logging_stack_elasticsearch_info
-  no_log: true
 
-- name: Gather information about kube-logging-stack elasticsearch
+- name: Print information about kube-logging-stack elasticsearch deployment
   debug:
-    msg: "{{ _kube_logging_stack_elasticsearch_info.status.status }}"
+    msg: "{{ _kube_logging_stack_elasticsearch_info.status }}"

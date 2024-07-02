@@ -8,14 +8,8 @@
     wait: true
     timeout: 600s
     values: "{{ kube_logging_stack_fluent_bit_values }}"
-
-- name: Gather information about kube-logging-stack kibana
-  kubernetes.core.helm_info:
-    name: "{{ kube_logging_stack_fluent_bit_release_name }}"
-    namespace: "{{ kube_logging_stack_fluent_bit_namespace }}"
   register: _kube_logging_stack_fluent_bit_info
-  no_log: true
 
-- name: Gather information about kube-logging-stack kibana
+- name: Print information about kube-logging-stack kibana deployment
   debug:
-    msg: "{{ _kube_logging_stack_fluent_bit_info.status.status }}"
+    msg: "{{ _kube_logging_stack_fluent_bit_info.status }}"

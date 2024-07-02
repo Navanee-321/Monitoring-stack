@@ -8,14 +8,8 @@
     wait: true
     timeout: 600s
     values: "{{ kube_prometheus_stack_values }}"
-
-- name: Gather information about kube-prometheus-stack
-  kubernetes.core.helm_info:
-    name: "{{ kube_prometheus_stack_release_name }}"
-    namespace: "{{ kube_prometheus_stack_namespace }}"
   register: _kube_prometheus_stack_info
-  no_log: true
 
-- name: Gather information about kube-prometheus-stack
+- name: Print information about kube-prometheus-stack deployment
   debug:
-    msg: "{{ _kube_prometheus_stack_info.status.status }}"
+    msg: "{{ _kube_prometheus_stack_info.status }}"
