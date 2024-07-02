@@ -37,7 +37,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
 
       - name: Checkout Public Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.event.inputs.repo }}
           ref: ${{ github.event.inputs.branch }}
@@ -60,6 +60,7 @@ jobs:
           playbook: deploy-stack-vm.yml
           directory: ${{ github.workspace }}/monitoring-logging-stack/ansible
           requirements: ${{ github.workspace }}/monitoring-logging-stack/ansible/requirements.yml
+          configuration: ${{ github.workspace }}/ansible/ansible.cfg
+          inventory: ${{ github.workspace }}/monitoring-logging-stack/variables/ansible/env/hosts
           options: |
-            --inventory ${{ github.workspace }}/monitoring-logging-stack/variables/ansible/env/hosts
             --tags ${{ github.event.inputs.stack }}

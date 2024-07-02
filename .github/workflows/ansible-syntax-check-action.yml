@@ -27,7 +27,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install Python and Ansible
         run: sudo apt update && sudo apt install -y python3-pip && sudo pip3 install ansible ruamel.yaml
@@ -46,6 +46,8 @@ jobs:
         with:
           playbook: playbook_repo.yml
           directory: ${{ github.workspace }}/ansible
+          inventory: localhost
+          configuration: ${{ github.workspace }}/ansible/ansible.cfg
           options: |
             --syntax-check
         env:
