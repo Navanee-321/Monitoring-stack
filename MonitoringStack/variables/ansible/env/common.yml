@@ -1,0 +1,114 @@
+# Grafana configuration
+grafana_security:
+  admin_user: admin         # Change your admin user name here 
+  admin_password: password  # Change your Grafana admin password here
+
+grafana_datasources:
+  - name: "Prometheus"
+    type: "prometheus"
+    url: "http://{{ groups['monitoring-stack'][0] }}:9090"
+
+# Import  Grafana Public Dashboards
+grafana_dashboards:
+  - dashboard_id: '1860'
+    revision_id: '37'
+    datasource: 'Prometheus'
+  - dashboard_id: '7587'
+    revision_id: '3'
+    datasource: 'Prometheus'
+
+# Path for Grafana Custom  Dashboards
+custom_dashboard_path: "../variables/ansible/env/custom-dashboards/*.json"
+
+# Update Prometheus Targets Here
+prometheus_targets:
+  node:
+    - targets: "{{ groups['target-nodes'] | map('regex_replace', '^(.*)$', '\\1:9100') | list }}"
+  process_exporter:
+    - targets: "{{ groups['target-nodes'] | map('regex_replace', '^(.*)$', '\\1:9256') | list }}"
+  alertmanager:
+    - targets: "{{ groups['monitoring-stack'] | map('regex_replace', '^(.*)$', '\\1:9093') | list }}"
+
+# Prometheus configuration
+prometheus_scrape_configs:
+  - job_name: "prometheus"
+    metrics_path: "{{ prometheus_metrics_path }}"
+    static_configs:
+      - targets:
+          - "{{ ansible_fqdn | default(ansible_host) | default('localhost') }}:9090"
+  - job_name: "node"
+    file_sd_configs:
+      - files:
+          - "{{ prometheus_config_dir }}/file_sd/node.yml"
+  - job_name: "process_exporter"
+    file_sd_configs:
+      - files:
+          - "{{ prometheus_config_dir }}/file_sd/process_exporter.yml"
+  - job_name: "alertmanager"
+    file_sd_configs:
+      - files:
+          - "{{ prometheus_config_dir }}/file_sd/alertmanager.yml"
+
+  - job_name: "blackbox_exporter"
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets: "{{ blackbox_exporter_targets }}"
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: "{{ blackbox_exporter_instance }}"
+
+# Blackbox Exporter instance IP
+blackbox_exporter_instance: "{{ groups['blackbox-ip'][0] }}:9115"
+
+# Blackbox Exporter Targets or Endpoints
+blackbox_exporter_targets:
+  - http://172.31.12.152:80
+  - https://optit.in/devops-as-a-service/
+
+# Alert Manager Config
+prometheus_alertmanager_config:
+  - static_configs:
+      - targets: ["{{ groups['monitoring-stack'][0] }}:9093"]
+
+alertmanager_slack_api_url: 'https://hooks.slack.com/services/xxx/xxx/xxx'
+
+alertmanager_smtp:
+  from: 'alerts@example.com'  # Change to your actual email
+  smarthost: 'smtp.gmail.com:587'  # Use Gmail's SMTP server
+  auth_username: 'smtp_username'
+  auth_password: 'smtp_password'  # Use App Password if 2FA is enabled
+
+alertmanager_receivers:
+  - name: slack
+    slack_configs:
+      - send_resolved: true
+        channel: '#alerts'
+  - name: 'email'
+    email_configs:
+      - to: 'alerts@example.com'
+        from: 'alerts@example.com'  # Ensure this matches the from field
+        smarthost: 'smtp.gmail.com:587'  # Use Gmail's SMTP server
+        auth_username: 'smtp_username'
+        auth_password: 'smtp_password'  # Use App Password if 2FA is enabled
+        send_resolved: true
+
+alertmanager_route:
+  group_by: ['alertname', 'cluster', 'service']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 5m
+  receiver: 'slack'
+  routes:
+    - match:
+        severity: critical
+      receiver: 'email'
+        
+# Path for Alertmanager Custom Rules
+custom_alertrules_path: "../variables/ansible/env/custom-alertrules/*.rules"
+

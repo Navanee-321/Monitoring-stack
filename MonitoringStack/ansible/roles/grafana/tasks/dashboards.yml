@@ -1,0 +1,102 @@
+---
+- name: "Create local Grafana dashboard directory"
+  become: false
+  delegate_to: localhost
+  run_once: true
+  ansible.builtin.tempfile:
+    state: directory
+  register: __tmp_dashboards
+  changed_when: false
+
+# Download Grafana.net dashboards if defined
+- name: "Download Grafana.net dashboards"
+  become: false
+  delegate_to: localhost
+  run_once: true
+  when: "grafana_dashboards | length > 0"
+  block:
+    - name: "Download Grafana dashboard from Grafana.net to local directory"
+      ansible.builtin.get_url:
+        url: "https://grafana.com/api/dashboards/{{ item.dashboard_id }}/revisions/{{ item.revision_id }}/download"
+        dest: "{{ __tmp_dashboards.path }}/{{ item.dashboard_id }}.json"
+        mode: "0644"
+      register: __download_dashboards
+      until: "__download_dashboards is succeeded"
+      retries: 5
+      delay: 2
+      changed_when: false
+      loop: "{{ grafana_dashboards }}"
+
+    - name: "Set the correct data source name in the downloaded dashboards"
+      ansible.builtin.replace:
+        dest: "{{ __tmp_dashboards.path }}/{{ item.dashboard_id }}.json"
+        regexp: '"(?:\${)?DS_[A-Z0-9_-]+(?:})?"'
+        replace: '"{{ item.datasource }}"'
+      changed_when: false
+      loop: "{{ grafana_dashboards }}"
+
+# Import dashboards through API
+- name: "Import Grafana dashboards via API"
+  community.grafana.grafana_dashboard:
+    grafana_url: "{{ grafana_api_url }}"
+    grafana_user: "{{ grafana_security.admin_user }}"
+    grafana_password: "{{ grafana_security.admin_password }}"
+    path: "{{ item }}"
+    message: "Updated by ansible role {{ ansible_role_name }}"
+    state: present
+    overwrite: true
+  no_log: "{{ 'false' if lookup('env', 'CI') else 'true' }}"
+  loop:
+    - "{{ __tmp_dashboards.path }}/*"
+    - "{{ grafana_dashboards_dir }}/*.json"
+    - "{{ grafana_custom_dashboards | map(attribute='path') | list }}"
+  when: "not grafana_use_provisioning"
+
+# Provisioning custom and downloaded dashboards
+- name: "Provision Grafana dashboards"
+  when: grafana_use_provisioning
+  block:
+    - name: "Create/Update provisioning configuration"
+      ansible.builtin.copy:
+        dest: "/etc/grafana/provisioning/dashboards/ansible.yml"
+        content: |
+          apiVersion: 1
+          providers:
+            - name: 'default'
+              orgId: 1
+              folder: ''
+              type: file
+              options:
+                path: "{{ grafana_data_dir }}/dashboards"
+        backup: false
+        owner: root
+        group: grafana
+        mode: "0640"
+      become: true
+      notify: restart_grafana
+
+    - name: "Copy custom dashboards to Grafana provisioning path"
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ grafana_data_dir }}/dashboards/{{ item | basename }}"
+        owner: root
+        group: grafana
+        mode: "0640"
+      with_fileglob:
+        - "{{ custom_dashboard_path }}"
+      become: true
+      notify: restart_grafana
+
+    - name: "Copy downloaded dashboards to provisioning path"
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ grafana_data_dir }}/dashboards/{{ item | basename }}"
+        owner: root
+        group: grafana
+        mode: "0640"
+      with_fileglob:
+        - "{{ __tmp_dashboards.path }}/*.json"
+        - "{{ grafana_dashboards_dir }}/*.json"
+      become: true
+      notify: restart_grafana
+

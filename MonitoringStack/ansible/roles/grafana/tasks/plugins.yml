@@ -1,0 +1,26 @@
+---
+- name: "Check which plugins are installed"
+  ansible.builtin.find:
+    file_type: directory
+    recurse: false
+    paths: "{{ grafana_data_dir }}/plugins"
+  register: __installed_plugins
+
+- name: "Extract plugin directory names"
+  set_fact:
+    installed_plugins_list: "{{ __installed_plugins.files | map('basename') | list }}"
+
+- name: "Install missing plugins"
+  become: true
+  ansible.builtin.command:
+    cmd: "grafana-cli --pluginsDir {{ grafana_data_dir }}/plugins plugins install {{ item }}"
+    creates: "{{ grafana_data_dir }}/plugins/{{ item }}"
+  loop: "{{ grafana_plugins | difference(installed_plugins_list) }}"
+  register: __plugin_install
+  retries: 5
+  delay: 2
+  until: __plugin_install.rc == 0
+  failed_when: "__plugin_install is failed"
+  notify:
+    - restart_grafana
+

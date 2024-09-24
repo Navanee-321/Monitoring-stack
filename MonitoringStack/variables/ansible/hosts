@@ -1,0 +1,11 @@
+[target-nodes]
+172.31.12.152
+
+[monitoring-stack]
+172.31.5.202
+
+[webserver]
+172.31.12.152
+
+[blackbox-ip]
+172.31.5.202

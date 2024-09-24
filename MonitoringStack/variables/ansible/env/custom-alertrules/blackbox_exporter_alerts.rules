@@ -1,0 +1,33 @@
+groups:
+  - name: blackbox_exporter_alerts
+    rules:
+      # HTTP service availability alert
+      - alert: ServiceDown
+        expr: probe_success == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service {{ $labels.instance }} is down"
+          description: "Service probed by Blackbox exporter is down at {{ $labels.instance }}."
+
+      # HTTP response time alert
+      - alert: HighResponseTime
+        expr: probe_duration_seconds > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High response time on {{ $labels.instance }}"
+          description: "HTTP response time is higher than 0.5 seconds for the service at {{ $labels.instance }}."
+
+      # DNS lookup failure alert
+      - alert: DNSLookupFailure
+        expr: probe_dns_lookup_time_seconds > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "DNS lookup failure on {{ $labels.instance }}"
+          description: "DNS lookup is taking more than 1 second on {{ $labels.instance }}."
+

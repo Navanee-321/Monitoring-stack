@@ -1,0 +1,37 @@
+---
+- name: Deploy Monitoring Stack
+  hosts: monitoring-stack
+  become: true
+  vars_files:
+    - ../variables/ansible/env/common.yml
+  roles:
+    - role: prometheus
+      tags: prometheus
+    - role: alertmanager
+      tags: alertmanager
+    - role: grafana
+      tags: grafana
+    - role: blackbox_exporter
+      tags: blackbox_exporter
+
+- name: Deploy Exporters
+  hosts: target-nodes
+  ignore_unreachable: true
+  become: true
+  vars_files:
+    - ../variables/ansible/env/common.yml
+  roles:
+    - role: node_exporter
+      tags: node_exporter
+    - role: process_exporter
+      tags: process_exporter
+
+- name: Deploy Web Server
+  hosts: webserver
+  become: true
+  vars_files:
+    - ../variables/ansible/env/common.yml
+    - ../variables/ansible/env/nginx.yml
+  roles:
+    - role: nginx
+      tags: webserver, reverse-proxy, nginx
