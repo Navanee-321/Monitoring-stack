@@ -1,0 +1,5 @@
+ Steps to setup Monitoring stack on VM's:
+1. Clone the repo
+2. Update hosts, common.yaml file
+3. Update the custom dashboards if required
+4. Run the ansible planbook
