@@ -1,23 +1,21 @@
+# Monitoring Stack
 
-# Monitoring & Logging Stack
-
-This repository contains a comprehensive DevOps stack for monitoring, utilizing tools such as Prometheus, Grafana, Blackbox exporter, Alertmanager, Process exporeter. The stack is configured for deployment using Ansible.
+This repository contains a comprehensive DevOps stack for monitoring, utilizing tools such as Prometheus, Grafana, Blackbox Exporter, Alertmanager, and Process Exporter. The stack is configured for deployment using Ansible.
 
 ## Table of Contents
 
--   [Overview](#overview).
--   [ Folder Structure](#folder-structure).
--   [ Ansible Setup](#ansible-setup).
--   [Running Playbook](#running-playbook).
+- [Overview](#overview)
+- [Folder Structure](#folder-structure)
+- [Ansible Setup](#ansible-setup)
+- [Running Ansible Playbooks](#running-ansible-playbooks)
 
 ## Overview
 
-  This repository is organized to deploy a complete monitoring solution. It includes configurations and deployment scripts for various components, leveraging Ansible for configuration management.
+This repository is organized to deploy a complete monitoring solution. It includes configurations and deployment scripts for various components, leveraging Ansible for configuration management.
 
 ## Folder Structure
 
 ```sh
-
 ├── ansible
 │   └── roles
 │       ├── alertmanager
@@ -128,25 +126,28 @@ This repository contains a comprehensive DevOps stack for monitoring, utilizing 
         │   │   ├── alert123.json
         │   │   ├── custom3.json
         │   │   └── process.json
-        │   └── ngnix.yml
+        │   └── nginx.yml
         └── hosts
 
 ```
+
 ## Ansible Setup
 
-The `ansible` directory contains playbooks and roles for deploying the monitoring stack using Ansible.
+The ansible directory contains playbooks and roles for deploying the monitoring stack using Ansible.
 
- -   `ansible.cfg`: Configuration file for Ansible.
- -   `roles/`: Directory containing Ansible roles for each component.
- -   `custom-alertrules`: Folder contains list of alerting rules and can add multiple alertrules if required
- -   `custom-dashboards`: Folder contains list of dashboards and can add more dashboards here if required
+ansible.cfg: Configuration file for Ansible.
+roles/: Directory containing Ansible roles for each component.
+custom-alertrules: Folder containing a list of alerting rules; you can add multiple alert rules if required.
+custom-dashboards: Folder containing a list of dashboards; you can add more dashboards here if needed.
 
 ## Running Ansible Playbooks
 
- -   Step 1. Ensure you have installed Ansible.
- -   Step 2. Make the ansible setup and make sure all the servers are connected to the ansible server (connect via ssh).
- -   Step 3. Clone the repo from the github.com to the ansible server.
- -   Step 4. Update the inventory file and variables as needed.
- -   Step 5. Update the custom-dashboards and custom- alertrules if required.
- -   Step 6. Run the ansible playbook..
-             -(ansible-playbook -i variables/ansible/hosts ansible/deploy-stack-vm.yml)
+Ensure you have Ansible installed.
+Make sure all servers are connected to the Ansible server (via SSH).
+Clone the repository from GitHub to the Ansible server.
+Update the inventory file and variables as needed.
+Update the custom-dashboards and custom-alertrules if required.
+Run the Ansible playbook:
+    -ansible-playbook -i variables/ansible/hosts ansible/deploy-stack-vm.yml
+
+
