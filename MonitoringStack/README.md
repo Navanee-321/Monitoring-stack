@@ -145,8 +145,16 @@ The `ansible` directory contains playbooks and roles for deploying the monitorin
 -  Ensure you have Ansible installed.
 -  Make sure all servers are connected to the Ansible server (via SSH).
 -  Clone the repository from GitHub to the Ansible server.
--  Update the inventory file and variables as needed.
--  Update the custom-dashboards and custom-alertrules if required.
+-  Update the inventory file `../variables/ansible/hosts`
+-   `target-nodes`- Ensure to add all the target Ip's
+-   `monitoring-stack`- Add the monitoring server Ip which you need to install monitoring stack.
+-   `webserver`- Add the webserver Ip to install the webservers.
+-   `blackbox-ip`- Add the blackbox Ip here to install `blackbox` in the server and to connect to the prometheus.
+-  Update the `common.yml` file `../variables/ansible/env/common.yml`
+-    `#Grafana Configuration` congifure the login setup (username and user password).
+-    `#Import Grafana Public Dashboards` Add, remove or replace the public dashboards by using the `dashboard_id` and `revision_id`if required.
+-    `#Alert Manager Config` update the `email configs` 
+-  Update the custom-dashboards and custom-alertrules`../variables/ansible/env/custom-dashboards custom-alertrules` if required.
 -  Run the Ansible playbook :  `ansible-playbook -i variables/ansible/hosts ansible/deploy-stack-vm.yml`
 -  Ensure the correct path and directories before running the playbook.
 
