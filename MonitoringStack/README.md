@@ -1,0 +1,158 @@
+# Monitoring & Logging Stack
+
+This repository contains a comprehensive DevOps stack for monitoring, utilizing tools such as Prometheus, Grafana, Blackbox Exporter, Alertmanager, and Process Exporter. The stack is configured for deployment using Ansible.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Folder Structure](#folder-structure)
+- [Ansible Setup](#ansible-setup)
+- [Running Ansible Playbooks](#running-ansible-playbooks)
+- [Variables](#variables).
+
+## Overview
+
+This repository is organized to deploy a complete monitoring solution. It includes configurations and deployment scripts for various components, leveraging Ansible for configuration management.
+
+## Folder Structure
+
+```sh
+├── ansible
+│   └── roles
+│       ├── alertmanager
+│       │   ├── defaults
+│       │   ├── handlers
+│       │   ├── meta
+│       │   ├── molecule
+│       │   │   ├── alternative
+│       │   │   │   └── tests
+│       │   │   ├── default
+│       │   │   │   └── tests
+│       │   │   └── latest
+│       │   │       └── tests
+│       │   ├── tasks
+│       │   ├── templates
+│       │   └── vars
+│       ├── blackbox_exporter
+│       │   ├── defaults
+│       │   ├── handlers
+│       │   ├── meta
+│       │   ├── molecule
+│       │   │   ├── alternative
+│       │   │   │   └── tests
+│       │   │   ├── default
+│       │   │   │   └── tests
+│       │   │   └── latest
+│       │   │       └── tests
+│       │   ├── tasks
+│       │   ├── templates
+│       │   └── vars
+│       ├── grafana
+│       │   ├── defaults
+│       │   ├── handlers
+│       │   ├── meta
+│       │   ├── molecule
+│       │   │   ├── alternative
+│       │   │   │   └── tests
+│       │   │   └── default
+│       │   │       └── tests
+│       │   ├── tasks
+│       │   ├── templates
+│       │   └── vars
+│       │       └── distro
+│       ├── nginx
+│       │   ├── defaults
+│       │   ├── handlers
+│       │   ├── meta
+│       │   ├── molecule
+│       │   │   └── default
+│       │   ├── tasks
+│       │   ├── templates
+│       │   └── vars
+│       ├── node_exporter
+│       │   ├── defaults
+│       │   ├── handlers
+│       │   ├── meta
+│       │   ├── molecule
+│       │   │   ├── alternative
+│       │   │   │   └── tests
+│       │   │   ├── default
+│       │   │   │   └── tests
+│       │   │   └── latest
+│       │   │       └── tests
+│       │   ├── tasks
+│       │   ├── templates
+│       │   └── vars
+│       ├── process_exporter
+│       │   ├── defaults
+│       │   ├── handlers
+│       │   ├── meta
+│       │   ├── molecule
+│       │   │   ├── alternative
+│       │   │   │   └── tests
+│       │   │   ├── default
+│       │   │   │   └── tests
+│       │   │   └── latest
+│       │   │       └── tests
+│       │   ├── tasks
+│       │   ├── templates
+│       │   └── vars
+│       ├── prometheus
+│       │   ├── defaults
+│       │   ├── handlers
+│       │   ├── meta
+│       │   ├── molecule
+│       │   │   ├── agentmode
+│       │   │   │   └── tests
+│       │   │   ├── alternative
+│       │   │   │   └── tests
+│       │   │   ├── default
+│       │   │   │   └── tests
+│       │   │   └── latest
+│       │   │       └── tests
+│       │   ├── tasks
+│       │   ├── templates
+│       │   └── vars
+│       └── users
+│           ├── defaults
+│           └── tasks
+└── variables
+    └── ansible
+        ├── env
+        │   ├── common.yml
+        │   ├── custom-alertrules
+        │   │   ├── blackbox_exporter_alerts.rules
+        │   │   └── node_exporter_alerts.rules
+        │   ├── custom-dashboards
+        │   │   ├── alert123.json
+        │   │   ├── custom3.json
+        │   │   └── process.json
+        │   └── nginx.yml
+        └── hosts
+
+```
+## Ansible Setup
+
+The `ansible` directory contains playbooks and roles for deploying the monitoring stack using Ansible.
+
+-   `ansible.cfg`: Configuration file for Ansible.
+-   `roles/`: Directory containing Ansible roles for each component.
+-   `custom-alertrules`: Folder containing a list of alerting rules; you can add multiple alert rules if required.
+-   `custom-dashboards`: Folder containing a list of dashboards; you can add more dashboards here if needed.
+
+## Running Ansible Playbooks
+
+-  Ensure you have Ansible installed.
+-  Make sure all servers are connected to the Ansible server (via SSH).
+-  Clone the repository from GitHub to the Ansible server.
+-  Update the inventory file and variables as needed.
+-  Update the custom-dashboards and custom-alertrules if required.
+-  Run the Ansible playbook :  `ansible-playbook -i variables/ansible/hosts ansible/deploy-stack-vm.yml`
+
+## Variables
+
+The `variables` directory contains configuration files for Ansible.
+
+-   `...variables/ansible/env`: Directory which contains Ansible environment variables like `common.yml` `custom-dashboards` ` custom alertrules`.
+
+Update these files with your environment-specific settings before deploying the stack
