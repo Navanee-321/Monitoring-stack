@@ -148,6 +148,7 @@ The `ansible` directory contains playbooks and roles for deploying the monitorin
 -  Update the inventory file and variables as needed.
 -  Update the custom-dashboards and custom-alertrules if required.
 -  Run the Ansible playbook :  `ansible-playbook -i variables/ansible/hosts ansible/deploy-stack-vm.yml`
+-  Ensure the correct path and directories before running the playbook.
 
 ## Variables
 
