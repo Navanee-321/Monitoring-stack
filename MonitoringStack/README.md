@@ -6,6 +6,7 @@ This repository contains a comprehensive DevOps stack for monitoring, utilizing 
 
 - [Overview](#overview)
 - [Folder Structure](#folder-structure)
+- [Versions](#versions)
 - [Ansible Setup](#ansible-setup)
 - [Running Ansible Playbooks](#running-ansible-playbooks)
 - [Variables](#variables).
@@ -131,6 +132,16 @@ This repository is organized to deploy a complete monitoring solution. It includ
         └── hosts
 
 ```
+## Versions
+
+-  Grafana -   `11.2.0`
+-  Prometheus -   `2.51.2`
+-  Node-exporter -   `1.7.0`
+-  Alertmanager -   `0.27.0`
+-  Blackbox-exporter -   `0.25.0`
+-  Process-exporter -   `0.8.1`
+     -   "Kindly prefer the latest versions if the above versions are not worked"
+
 ## Ansible Setup
 
 The `ansible` directory contains playbooks and roles for deploying the monitoring stack using Ansible.
