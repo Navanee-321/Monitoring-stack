@@ -1,4 +1,4 @@
-# Grafana configuration
+# Grafana configuration - We have used the version 11.2.0 (If not works use the latest version)
 grafana_security:
   admin_user: admin         # Change your admin user name here 
   admin_password: password  # Change your Grafana admin password here
@@ -8,7 +8,7 @@ grafana_datasources:
     type: "prometheus"
     url: "http://{{ groups['monitoring-stack'][0] }}:9090"
 
-# Import  Grafana Public Dashboards
+# Import  Grafana Public Dashboards - Check the grafana labs for public dashboards.
 grafana_dashboards:
   - dashboard_id: '1860'
     revision_id: '37'
@@ -20,7 +20,7 @@ grafana_dashboards:
 # Path for Grafana Custom  Dashboards
 custom_dashboard_path: "../variables/ansible/env/custom-dashboards/*.json"
 
-# Update Prometheus Targets Here
+# Update Prometheus Targets Here - We have used the version 2.51.2 (If not works use the latest version)
 prometheus_targets:
   node:
     - targets: "{{ groups['target-nodes'] | map('regex_replace', '^(.*)$', '\\1:9100') | list }}"
@@ -63,7 +63,7 @@ prometheus_scrape_configs:
       - target_label: __address__
         replacement: "{{ blackbox_exporter_instance }}"
 
-# Blackbox Exporter instance IP
+# Blackbox Exporter instance IP - We have used the version 0.15.0 (If not works use the latest version)
 blackbox_exporter_instance: "{{ groups['blackbox-ip'][0] }}:9115"
 
 # Blackbox Exporter Targets or Endpoints
@@ -71,7 +71,7 @@ blackbox_exporter_targets:
   - http://172.31.12.152:80
   - https://optit.in/devops-as-a-service/
 
-# Alert Manager Config
+# Alert Manager Config  - We have used the version 0.27.0 (If not works use the latest version)
 prometheus_alertmanager_config:
   - static_configs:
       - targets: ["{{ groups['monitoring-stack'][0] }}:9093"]
