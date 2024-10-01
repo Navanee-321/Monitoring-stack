@@ -157,7 +157,7 @@ The `ansible` directory contains playbooks and roles for deploying the monitorin
 -  Make sure all servers are connected to the Ansible server (via SSH).
 -  Clone the repository from GitHub to the Ansible server.
 -  Update the inventory file `../variables/ansible/hosts`
-    -   `target-nodes`- Ensure to add all the target Ip's
+    -   `target-nodes`- Ensure to add all the target Ip's and add `monitoring-stack` Ip to check the health of the instance.
     -   `monitoring-stack`- Add the monitoring server Ip which you need to install monitoring stack.
     -   `webserver`- Add the webserver Ip to install the webservers.
     -   `blackbox-ip`- Add the blackbox Ip here to install `blackbox` in the server and to connect to the prometheus.
