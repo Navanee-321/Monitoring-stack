@@ -1,6 +1,0 @@
----
-# defaults file for kube-logging-stack fluent-bit
-kube_logging_stack_fluent_bit_release_name: logging
-kube_logging_stack_fluent_bit_namespace: logging
-kube_logging_stack_fluent_bit_chart_ref: ../kubernetes/helm_charts/logging/fluent-bit
-kube_logging_stack_fluent_bit_values: {}

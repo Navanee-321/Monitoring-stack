@@ -17,8 +17,8 @@ groups:
         annotations:
           description: "Host is down."
 
-# Root Partition:
-      - alert: Root Partition High
+      # Root Partition:
+      - alert: RootPartitionHigh
         expr: node_filesystem_free_percent <= 10
         for: 5m
         labels:
@@ -27,8 +27,8 @@ groups:
           value: "{{ $value }}%"
           description: "Disk available is less than 10%."
 
-      - alert: Root Partition
-        expr: 10 < node_filesystem_free_percent <= 20
+      - alert: RootPartition
+        expr: node_filesystem_free_percent > 10 and node_filesystem_free_percent <= 20
         for: 5m
         labels:
           severity: warning
@@ -36,17 +36,17 @@ groups:
           value: "{{ $value }}%"
           description: "Disk available is less than 20%."
 
-# Swap Memory:
-      - alert: Swap Memory
-        expr: 10 < node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes * 100 <= 20
+      # Swap Memory:
+      - alert: SwapMemory
+        expr: node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes * 100 <= 20 and node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes * 100 > 10
         for: 5m
         labels:
           severity: warning
         annotations:
           value: "{{ $value }}%"
-          description: "Swap memory available is less than 20%"
+          description: "Swap memory available is less than 20%."
 
-      - alert: Swap High Memory
+      - alert: SwapHighMemory
         expr: node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes * 100 <= 10
         for: 2m
         labels:
@@ -55,18 +55,18 @@ groups:
           value: "{{ $value }}%"
           description: "Swap memory available is less than 10%."
 
-# RAM
-      - alert: Host Out Of Memory High
+      # RAM
+      - alert: HostOutOfMemoryHigh
         expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 <= 10
         for: 2m
         labels:
           severity: critical
         annotations:
           value: "{{ $value }}%"
-          description: "Memory available is less than 10%"
+          description: "Memory available is less than 10%."
 
-      - alert: Host Out Of Memory
-        expr: 10 < node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 <= 20
+      - alert: HostOutOfMemory
+        expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 > 10 and node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 <= 20
         for: 5m
         labels:
           severity: warning
@@ -74,8 +74,8 @@ groups:
           value: "{{ $value }}%"
           description: "Memory available is less than 20%."
 
-# CPU Utilization
-      - alert: Host High Cpu Utilization
+      # CPU Utilization
+      - alert: HostHighCpuUtilization
         expr: 100 - (avg by(instance, job) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) >= 90
         for: 2m
         labels:
@@ -84,8 +84,8 @@ groups:
           value: "{{ $value }}%"
           description: "CPU Utilization is greater than 90%."
 
-      - alert: Host Cpu Utilization
-        expr: 90 > 100 - (avg by(instance, job) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) >= 80
+      - alert: HostCpuUtilization
+        expr: 100 - (avg by(instance, job) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) >= 80 and 100 - (avg by(instance, job) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) < 90
         for: 5m
         labels:
           severity: warning
@@ -93,8 +93,8 @@ groups:
           value: "{{ $value }}%"
           description: "CPU Utilization is greater than 80%."
 
-# CPU LOAD
-      - alert: Host High Cpu Load
+      # CPU LOAD
+      - alert: HostHighCpuLoad
         expr: node_load1 >= 1.7
         for: 5m
         labels:
@@ -103,11 +103,12 @@ groups:
           value: "{{ $value }}"
           description: "CPU load of 1min is greater than or equal to 1.7."
 
-      - alert: Host Cpu Load
-        expr: 1.7 > node_load1 >= 1.5
+      - alert: HostCpuLoad
+        expr: node_load1 < 1.7 and node_load1 >= 1.5
         for: 5m
         labels:
           severity: warning
         annotations:
           value: "{{ $value }}"
           description: "CPU load of 1min is in between 1.5 to 1.7."
+

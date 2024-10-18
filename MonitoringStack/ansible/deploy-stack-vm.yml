@@ -3,7 +3,9 @@
   hosts: monitoring-stack
   become: true
   vars_files:
-    - ../variables/ansible/env/common.yml
+  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/common.yml
+  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/secrets.yml
+
   roles:
     - role: prometheus
       tags: prometheus
@@ -19,7 +21,9 @@
   ignore_unreachable: true
   become: true
   vars_files:
-    - ../variables/ansible/env/common.yml
+  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/common.yml
+  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/secrets.yml
+
   roles:
     - role: node_exporter
       tags: node_exporter
@@ -27,11 +31,12 @@
       tags: process_exporter
 
 - name: Deploy Web Server
-  hosts: webserver
+  hosts: monitoring-stack
   become: true
   vars_files:
-    - ../variables/ansible/env/common.yml
-    - ../variables/ansible/env/nginx.yml
+  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/common.yml
+  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/secrets.yml
+  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/nginx.yml
   roles:
     - role: nginx
       tags: webserver, reverse-proxy, nginx
