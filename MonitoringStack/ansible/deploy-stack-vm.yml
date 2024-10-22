@@ -3,8 +3,8 @@
   hosts: monitoring-stack
   become: true
   vars_files:
-  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/common.yml
-  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/secrets.yml
+  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/common.yml
+  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/secrets.yml
 
   roles:
     - role: prometheus
@@ -21,8 +21,8 @@
   ignore_unreachable: true
   become: true
   vars_files:
-  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/common.yml
-  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/secrets.yml
+  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/common.yml
+  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/secrets.yml
 
   roles:
     - role: node_exporter
@@ -34,9 +34,9 @@
   hosts: monitoring-stack
   become: true
   vars_files:
-  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/common.yml
-  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/secrets.yml
-  - /home/ubuntu/Observability-Nav/MonitoringStack/variables/ansible/env/nginx.yml
+  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/common.yml
+  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/secrets.yml
+  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/nginx.yml
   roles:
     - role: nginx
       tags: webserver, reverse-proxy, nginx
