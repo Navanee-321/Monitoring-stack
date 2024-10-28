@@ -1,10 +1,10 @@
 ---
 users:
-  deployer:
+  "{{ user_name }}":
     state: present
     sudo: true
-    # password: "Generate a password with mkpasswd --method=sha-512"
-    password: "$6$Zg2yHM8EW5kKAok2$gDqhSWaHWRhscvQbAhYAZGUVbkO9s.EfcWIOxi5GIl56r3dUERFDkKjm9A7FvAvMqrUIr87llse8OI5To1sOO/"
-    # ssh_public_key: "Add your ssh public key here or https://github.com/username.keys"
-    ssh_public_key: "ssh-rsa AAAAB..."
+    password: "{{ remote_user_password | password_hash('sha512') }}" # 
+
+    # ssh_public_key: "Add your ssh public key here"
+    ssh_public_key: "{{ ssh_key }}"
     sudo_no_password: true

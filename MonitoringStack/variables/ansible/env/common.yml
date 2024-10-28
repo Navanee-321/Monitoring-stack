@@ -1,3 +1,6 @@
+# Common user name across all the target server
+user_name: deployer
+  
 # Grafana configuration - We have used the version 11.2.0 (If not works use the latest version)
 grafana_security:
   admin_user: "{{ admin_user }}"
@@ -58,7 +61,13 @@ prometheus_scrape_configs:
       - source_labels: [__address__]
         target_label: __param_target
       - source_labels: [__param_target]
+        regex: http://172.31.12.152:80
         target_label: instance
+        replacement: nginx-server
+      - source_labels: [__param_target]
+        regex: https://optit.in/devops-as-a-service/
+        target_label: instance
+        replacement: opti-devops
       - target_label: __address__
         replacement: "{{ blackbox_exporter_instance }}"
 

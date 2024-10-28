@@ -2,6 +2,9 @@
   hosts: all
   ignore_unreachable: true
   become: true
+  vars_files:
+  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/common.yml
+  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/secrets.yml
   roles:
     - role: users
       tags: users
