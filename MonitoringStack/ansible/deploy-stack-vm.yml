@@ -3,8 +3,24 @@
   hosts: monitoring-stack
   become: true
   vars_files:
-  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/common.yml
-  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/secrets.yml
+    - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/common.yml
+    - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/secrets.yml
+
+  tasks:
+    - name: Display label
+      debug:
+        msg: "Deploying on {{ inventory_hostname }} - Label: {{ label }}"
+
+    - name: Create node.yml for Prometheus
+      copy:
+        dest: /etc/prometheus/file_sd/node.yml
+        content: |
+          {% for host in groups['target-nodes'] %}
+          - targets:
+            - {{ host }}:9100
+            labels:
+              instance: "{{ hostvars[host].label }}"
+          {% endfor %}
 
   roles:
     - role: prometheus
@@ -21,8 +37,13 @@
   ignore_unreachable: true
   become: true
   vars_files:
-  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/common.yml
-  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/secrets.yml
+    - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/common.yml
+    - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/secrets.yml
+
+  tasks:
+    - name: Display label
+      debug:
+        msg: "Deploying exporters on {{ inventory_hostname }} - Label: {{ label }}"
 
   roles:
     - role: node_exporter
@@ -34,9 +55,16 @@
   hosts: monitoring-stack
   become: true
   vars_files:
-  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/common.yml
-  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/secrets.yml
-  - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/nginx.yml
+    - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/common.yml
+    - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/secrets.yml
+    - /home/ubuntu/Monitoring-stack/MonitoringStack/variables/ansible/env/nginx.yml
+
+  tasks:
+    - name: Display label
+      debug:
+        msg: "Deploying Nginx on {{ inventory_hostname }} - Label: {{ label }}"
+
   roles:
     - role: nginx
       tags: webserver, reverse-proxy, nginx
+

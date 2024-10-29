@@ -1,6 +1,11 @@
 [target-nodes]
-172.31.3.38
+172.31.3.38 label="Target Node 1"
+172.31.5.219 label="Target Node 2"
 
 [monitoring-stack]
-172.31.15.199
+172.31.15.199 label="Monitoring Stack"
+
+[blackbox-exporter]
+172.31.15.199 label="Blackbox Exporter"
+
 
